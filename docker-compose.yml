@@ -2,11 +2,13 @@ version: '3.8'
 
 services:
   bmi_calculator:
+    image: abhisekpati/bmi_calculator:latest
     build:
       context: .
-      dockerfile: Dockerfile  # Path to your Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - "4040:4040"  # Map port 4040 on the host to port 4040 in the container
+      - "4040:4040" # Maps port 4040 on the host to port 4040 in the container
     environment:
-      - FLASK_ENV=development  # Enables Flask development mode
+      - FLASK_ENV=production
+    restart: always
 
