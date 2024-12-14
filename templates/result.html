@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .score-meter {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            height: 30px;
+            margin: 20px 0;
+        }
+        .score {
+            height: 100%;
+            background-color: #4CAF50; /* Default to green for Normal weight */
+            position: absolute;
+            transition: width 0.3s;
+        }
+        .arrow {
+            position: absolute;
+            bottom: 40px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid red; /* Arrow color */
+            transform: translateX(-50%);
+            transition: left 0.5s; /* Smooth transition for arrow movement */
+        }
+        .label {
+            position: absolute;
+            top: 35px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your BMI Result</h1>
+    <p>Your BMI is: {{ bmi | round(2) }}</p>
+    <p>Category: {{ category }}</p>
+
+    <!-- Score Meter -->
+    <div class="score-meter">
+        <div class="score" style="width: 
+            {% if bmi < 18.5 %}
+                20%
+            {% elif bmi < 24.9 %}
+                50%
+            {% elif bmi < 29.9 %}
+                75%
+            {% else %}
+                100%
+            {% endif %};"></div>
+        <div class="arrow" id="arrow" style="left: 
+            {% if bmi < 18.5 %}
+                10%
+            {% elif bmi < 24.9 %}
+                50%
+            {% elif bmi < 29.9 %}
+                75%
+            {% else %}
+                90%
+            {% endif %};"></div>
+    </div>
+    <div class="label" style="left: 0%;">Underweight</div>
+    <div class="label" style="left: 50%;">Normal</div>
+    <div class="label" style="left: 75%;">Overweight</div>
+    <div class="label" style="left: 100%;">Obese</div>
+
+    <a href="/">Calculate again</a>
+
+    <script>
+        // Arrow movement based on BMI
+        const bmi = {{ bmi }};
+        const arrow = document.getElementById('arrow');
+
+        let position = 0; // Initialize position
+
+        if (bmi < 18.5) {
+            position = 10; // Adjusted for Underweight
+        } else if (bmi < 24.9) {
+            position = 50; // Normal weight
+        } else if (bmi < 29.9) {
+            position = 75; // Overweight
+        } else {
+            position = 90; // Obese
+        }
+
+        // Set the arrow position
+        arrow.style.left = position + '%';
+    </script>
+</body>
+</html>
+
